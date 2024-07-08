@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vigenère Decryption</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/milligram@1.4.1/dist/milligram.min.css">
+        <style>
+            body {
+                margin: 20px; /* Add some margin for better spacing */
+            }
+            .container {
+                max-width: 600px; /* Adjust the container width as needed */
+                margin: 0 auto; /* Center align the container */
+            }
+            h1, h2 {
+                text-align: center; /* Center align headings */
+            }
+            form {
+                margin-bottom: 20px; /* Add margin below the form */
+            }
+            label {
+                margin-bottom: 5px; /* Add some space below labels */
+            }
+            input[type="text"], input[type="submit"] {
+                width: 100%; /* Make inputs full-width */
+                padding: 8px; /* Add padding for better appearance */
+                margin-bottom: 10px; /* Add space below inputs */
+            }
+            #plaintext {
+                font-family: monospace; /* Use monospace font for plaintext display */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Vigenère Decryption</h1>
+            <form id="decryptForm">
+                <label for="ciphertext">Ciphertext:</label><br>
+                <input type="text" id="ciphertext" name="ciphertext"><br>
+                <label for="key">Key:</label><br>
+                <input type="text" id="key" name="key"><br><br>
+                <input type="submit" value="Decrypt" class="button-primary">
+            </form>
+    
+            <h2>Decrypted Plaintext</h2>
+            <p id="plaintext" class="result"></p>
+        </div>
+    
+        <script>
+            document.getElementById('decryptForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const ciphertext = document.getElementById('ciphertext').value;
+                const key = document.getElementById('key').value;
+    
+                fetch('/decrypt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ciphertext, key }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('plaintext').textContent = `Plaintext: ${data.plaintext}`;
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        </script>
+    </body>
+    </html>
+    
